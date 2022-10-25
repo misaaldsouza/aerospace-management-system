@@ -1,0 +1,63 @@
+DATABASE CODE ( ___EntityName___)
+____Agency_____
+CREATE TABLE Agency(
+  agency_code number(10) primary key,
+  location varchar2(50),
+  launch_site varchar2(50)
+  );
+___Space_Station___
+CREATE TABLE Space_Station(
+  SSC number(10) primary key,
+  no_of_astronauts number(10),
+  experiment_labs number(5)
+  );
+___Satellite____
+CREATE TABLE Satellite(
+  catalog_number number(10) primary key,
+  statistics varchar2(10),
+  orbit_value number(7),
+  SSC,
+  agency_code,
+  foreign key (SSC) references space_station(SSC),
+  foreign key(agency_code) references Agency(agency_code)
+  );
+
+___Astronaut___
+CREATE TABLE Astronaut(
+	SSN number(10) primary key,
+	name varchar2(20),
+    DOB Date,
+	Age number(2),
+	SSC,
+	foreign key(SSC) references space_station(SSC)
+);
+
+___Spacecraft___
+CREATE TABLE Spacecraft(
+	instrument_code number(5) primary key,
+	capacity number(5),
+	navigation_system varchar2(25),
+ 	SSC,
+	foreign key(SSC) references space_station(SSC)
+);
+
+___Missions_____
+CREATE TABLE Missions(
+	mission_number number(5) primary key,
+	date_time_of_launch date,
+	new_discoveries varchar2(50),
+	instrument_code,
+	agency_code,
+	foreign key(instrument_code) references spacecraft(instrument_code),
+	foreign key(agency_code) references agency(agency_code)
+);
+
+___CommissioningMissions___
+
+CREATE TABLE CommissioningMissions(
+	CM_ID number(1),
+	SSN,
+	mission_number,
+	foreign key(SSN) references astronaut(SSN),
+	foreign key(mission_number) references missions(mission_number)
+);	
